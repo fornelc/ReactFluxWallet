@@ -1,14 +1,28 @@
 //Items list
 
 import React from 'react';
+import WalletStore from '../stores/walletStore';
  
 class ItemsList extends React.Component {
  
     constructor(props) {
         super(props);
         this.state = {
-            items: []
+            items: WalletStore.getAllItems()
         };
+        this._onChange = this._onChange.bind(this);
+    }
+
+    _onChange() {
+        this.setState({ items: WalletStore.getAllItems() });
+    }
+ 
+    componentWillMount() {
+        WalletStore.addChangeListener(this._onChange);
+    }
+ 
+    componentWillUnmount() {
+        WalletStore.removeChangeListener(this._onChange);
     }
  
     render() {
